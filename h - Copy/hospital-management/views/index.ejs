@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hospital Management System</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="navbar">
+                <a href="/" class="logo">HospitalMS</a>
+                <ul class="nav-links">
+                    <% if (!user) { %>
+                        <li><a href="/login">Login</a></li>
+                        <li><a href="/register/patient">Patient Registration</a></li>
+                    <% } else { %>
+                        <li class="user-info">
+                            <span><%= user.full_name %></span>
+                        </li>
+                        <li><a href="/logout">Logout</a></li>
+                    <% } %>
+                </ul>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <section class="hero">
+            <div class="container">
+                <div class="hero-content">
+                    <h1>Welcome to Our Hospital Management System</h1>
+                    <p>Providing quality healthcare services with advanced technology and compassionate care.</p>
+                    <div class="hero-buttons">
+                        <a href="/login" class="btn">Login</a>
+                        <a href="/register/patient" class="btn btn-success">Patient Registration</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="features">
+            <div class="container">
+                <h2 class="section-title">Our Services</h2>
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <i class="fas fa-user-md"></i>
+                        <h3>Expert Doctors</h3>
+                        <p>Our team of specialists provides the highest quality care.</p>
+                    </div>
+                    <div class="feature-card">
+                        <i class="fas fa-procedures"></i>
+                        <h3>Advanced Facilities</h3>
+                        <p>State-of-the-art equipment for accurate diagnosis and treatment.</p>
+                    </div>
+                    <div class="feature-card">
+                        <i class="fas fa-calendar-check"></i>
+                        <h3>Easy Appointments</h3>
+                        <p>Book your appointments online with just a few clicks.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2023 Hospital Management System. All rights reserved.</p>
+        </div>
+    </footer>
+</body>
+</html>

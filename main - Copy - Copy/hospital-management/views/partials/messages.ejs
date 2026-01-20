@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <!-- views/partials/messages.ejs -->
+<div class="message-container">
+    <!-- Inbox Section -->
+    <div class="card">
+      <div class="card-header">
+        <h2 class="card-title">Inbox</h2>
+      </div>
+      <div class="card-body">
+        <div class="table-responsive">
+          <table class="table message-table">
+            <thead>
+              <tr>
+                <th><%= user.role === 'admin' ? 'From' : 'Sender' %></th>
+                <th>Subject</th>
+                <th>Preview</th>
+                <th>Date</th>
+                <th>Status</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% messages.forEach(message => { %>
+                <% if (message.receiver_type === user.role && message.receiver_id === user.id) { %>
+                  <tr class="<%= message.is_read ? '' : 'unread' %>">
+                    <td><%= message.sender_name %></td>
+                    <td><%= message.subject %></td>
+                    <td><%= message.message.substring(0, 50) %><%= message.message.length > 50 ? '...' : '' %></td>
+                    <td><%= new Date(message.created_at).toLocaleString() %></td>
+                    <td>
+                      <span class="badge <%= message.is_read ? 'badge-success' : 'badge-warning' %>">
+                        <%= message.is_read ? 'Read' : 'Unread' %>
+                      </span>
+                    </td>
+                    <td>
+                      <button class="btn btn-sm btn-primary" onclick="showMessage('<%= message.message_id %>')">
+                        View
+                      </button>
+                    </td>
+                  </tr>
+                <% } %>
+              <% }) %>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  
+    <!-- Sent Messages Section -->
+    <div class="card mt-4">
+      <div class="card-header">
+        <h2 class="card-title">Sent Messages</h2>
+      </div>
+      <div class="card-body">
+        <div class="table-responsive">
+          <table class="table message-table">
+            <thead>
+              <tr>
+                <th>To</th>
+                <th>Subject</th>
+                <th>Preview</th>
+                <th>Date</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% messages.forEach(message => { %>
+                <% if (message.sender_type === user.role && message.sender_id === user.id) { %>
+                  <tr>
+                    <td><%= message.receiver_name %></td>
+                    <td><%= message.subject %></td>
+                    <td><%= message.message.substring(0, 50) %><%= message.message.length > 50 ? '...' : '' %></td>
+                    <td><%= new Date(message.created_at).toLocaleString() %></td>
+                    <td>
+                      <span class="badge <%= message.is_read ? 'badge-success' : 'badge-warning' %>">
+                        <%= message.is_read ? 'Read' : 'Unread' %>
+                      </span>
+                    </td>
+                  </tr>
+                <% } %>
+              <% }) %>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  
+    <!-- Message Modal -->
+    <div id="messageModal" class="modal hidden">
+      <div class="modal-content">
+        <span class="close" onclick="closeModal()">&times;</span>
+        <h2 id="modalSubject"></h2>
+        <p><strong>From:</strong> <span id="modalSender"></span></p>
+        <p><strong>Date:</strong> <span id="modalDate"></span></p>
+        <div class="modal-body">
+          <p id="modalMessage"></p>
+        </div>
+        <% if (user.role !== 'admin') { %>
+          <hr>
+          <h3>Reply</h3>
+          <form id="replyForm" method="POST" action="/<%= user.role %>/messages/reply">
+            <input type="hidden" name="original_message_id" id="originalMessageId">
+            <div class="form-group">
+              <label for="replySubject">Subject</label>
+              <input type="text" id="replySubject" name="subject" class="form-control" required>
+            </div>
+            <div class="form-group">
+              <label for="replyMessage">Message</label>
+              <textarea id="replyMessage" name="message" class="form-control" rows="5" required></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary">Send Reply</button>
+          </form>
+        <% } %>
+      </div>
+    </div>
+  </div>
+  
+  <script>
+    // Shared message functions
+    async function showMessage(messageId) {
+      try {
+        const response = await fetch(`/<%= user.role %>/messages/${messageId}`);
+        if (!response.ok) throw new Error('Failed to fetch message');
+        
+        const message = await response.json();
+        
+        // Update modal
+        document.getElementById('modalSubject').textContent = message.subject;
+        document.getElementById('modalSender').textContent = message.sender_name;
+        document.getElementById('modalDate').textContent = new Date(message.created_at).toLocaleString();
+        document.getElementById('modalMessage').textContent = message.message;
+        
+        // Setup reply form if exists
+        const replyForm = document.getElementById('replyForm');
+        if (replyForm) {
+          replyForm.querySelector('#originalMessageId').value = messageId;
+          replyForm.querySelector('#replySubject').value = `Re: ${message.subject}`;
+        }
+        
+        document.getElementById('messageModal').classList.remove('hidden');
+      } catch (error) {
+        console.error('Error:', error);
+        alert('Failed to load message');
+      }
+    }
+  
+    function closeModal() {
+      document.getElementById('messageModal').classList.add('hidden');
+    }
+  </script>
+</body>
+</html>

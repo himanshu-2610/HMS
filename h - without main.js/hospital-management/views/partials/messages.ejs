@@ -1,0 +1,30 @@
+<!-- Partial for displaying messages -->
+<div class="messages-container">
+    <h1>Messages</h1>
+    <p>Welcome, <%= user.full_name %> (<%= user.role %>)</p>
+    <p><a href="/messages">View all messages</a></p>
+</div>
+<h1>Send a Message</h1>
+<form action="/send/message" method="POST">
+    <label for="receiver_id">Receiver:</label>
+    <select name="receiver_id" required>
+        <% if (user.role === 'admin') { %>
+            <option value="doctor">Doctor</option>
+            <option value="patient">Patient</option>
+        <% } else if (user.role === 'doctor') { %>
+            <option value="patient">Patient</option>
+            <option value="admin">Admin</option>
+        <% } else if (user.role === 'patient') { %>
+            <option value="doctor">Doctor</option>
+            <option value="admin">Admin</option>
+        <% } %>
+    </select>
+
+    <label for="subject">Subject:</label>
+    <input type="text" name="subject" required>
+
+    <label for="message">Message:</label>
+    <textarea name="message" required></textarea>
+
+    <button type="submit">Send Message</button>
+</form>

@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pharmacy Management</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/admin.css">
+</head>
+<body>
+  <header>
+    <div class="container">
+      <h1>Hospital Management System</h1>
+      <nav>
+        <ul>
+          <li><a href="dashboard.html">Dashboard</a></li>
+          <li><a href="patients.html">Patients</a></li>
+          <li><a href="doctors.html">Doctors</a></li>
+          <li><a href="appointments.html">Appointments</a></li>
+          <li><a href="pharmacy.html" class="active">Pharmacy</a></li>
+          <li><a href="wards.html">Wards</a></li>
+          <li><a class="logout-btn">Logout</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <div class="card">
+      <div class="card-header">
+        <h2>Pharmacy Inventory</h2>
+        <div class="action-btns">
+          <button class="btn" id="addMedicineBtn">Add Medicine</button>
+        </div>
+      </div>
+      
+      <div class="filter-bar">
+        <div class="form-group">
+          <label for="medicineSearch">Search</label>
+          <input type="text" id="medicineSearch" placeholder="Search medicines...">
+        </div>
+        <div class="form-group">
+          <label for="expiryFilter">Expiry Status</label>
+          <select id="expiryFilter">
+            <option value="">All</option>
+            <option value="expiring">Expiring Soon</option>
+            <option value="expired">Expired</option>
+          </select>
+        </div>
+      </div>
+      
+      <div class="table-responsive">
+        <table id="medicineTable">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Name</th>
+              <th>Quantity</th>
+              <th>Price</th>
+              <th>Expiry Date</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- Will be populated by JavaScript -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </main>
+
+  <!-- Add Medicine Modal -->
+  <div id="medicineModal" class="form-modal">
+    <div class="form-modal-content">
+      <span class="close-modal">&times;</span>
+      <h3 id="modalTitle">Add Medicine</h3>
+      <form id="medicineForm">
+        <input type="hidden" id="medicineId">
+        <div class="form-group">
+          <label for="medName">Name</label>
+          <input type="text" id="medName" required>
+        </div>
+        <div class="form-group">
+          <label for="medDescription">Description</label>
+          <textarea id="medDescription" rows="3"></textarea>
+        </div>
+        <div class="form-group">
+          <label for="medQuantity">Quantity</label>
+          <input type="number" id="medQuantity" min="0" required>
+        </div>
+        <div class="form-group">
+          <label for="medPrice">Price</label>
+          <input type="number" id="medPrice" min="0" step="0.01" required>
+        </div>
+        <div class="form-group">
+          <label for="medExpiry">Expiry Date</label>
+          <input type="date" id="medExpiry" required>
+        </div>
+        <div class="form-group">
+          <label for="medSupplier">Supplier</label>
+          <input type="text" id="medSupplier">
+        </div>
+        <button type="submit" class="btn">Save Medicine</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Stock Update Modal -->
+  <div id="stockModal" class="form-modal">
+    <div class="form-modal-content">
+      <span class="close-modal">&times;</span>
+      <h3>Update Stock</h3>
+      <form id="stockForm">
+        <input type="hidden" id="stockMedicineId">
+        <div class="form-group">
+          <label for="stockChange">Quantity Change</label>
+          <input type="number" id="stockChange" required>
+          <small>Positive number to add, negative to remove</small>
+        </div>
+        <button type="submit" class="btn">Update Stock</button>
+      </form>
+    </div>
+  </div>
+
+  <footer>
+    <div class="container">
+      <p>&copy; 2023 Hospital Management System</p>
+    </div>
+  </footer>
+
+  <script src="../js/auth.js"></script>
+  <script src="../js/admin.js"></script>
+</body>
+</html>

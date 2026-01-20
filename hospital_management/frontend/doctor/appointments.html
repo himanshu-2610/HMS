@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Appointments</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/doctor.css">
+</head>
+<body>
+  <header>
+    <div class="container">
+      <h1>Hospital Management System</h1>
+      <nav>
+        <ul>
+          <li><a href="dashboard.html">Dashboard</a></li>
+          <li><a href="patients.html">My Patients</a></li>
+          <li><a href="appointments.html" class="active">Appointments</a></li>
+          <li><a class="logout-btn">Logout</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <div class="card">
+      <h2>My Appointments</h2>
+      
+      <div class="filter-bar">
+        <div class="form-group">
+          <label for="dateFilter">Date</label>
+          <input type="date" id="dateFilter">
+        </div>
+        <div class="form-group">
+          <label for="statusFilter">Status</label>
+          <select id="statusFilter">
+            <option value="">All</option>
+            <option value="scheduled">Scheduled</option>
+            <option value="completed">Completed</option>
+            <option value="cancelled">Cancelled</option>
+          </select>
+        </div>
+      </div>
+      
+      <div class="table-responsive">
+        <table id="appointmentsTable">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Date & Time</th>
+              <th>Patient</th>
+              <th>Reason</th>
+              <th>Status</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- Will be populated by JavaScript -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </main>
+
+  <!-- Appointment Details Modal -->
+  <div id="appointmentDetailsModal" class="form-modal">
+    <div class="form-modal-content">
+      <span class="close-modal">&times;</span>
+      <h3 id="appointmentTitle">Appointment Details</h3>
+      
+      <div class="appointment-info">
+        <p><strong>Patient:</strong> <span id="appPatientName"></span></p>
+        <p><strong>Date & Time:</strong> <span id="appDateTime"></span></p>
+        <p><strong>Reason:</strong> <span id="appReason"></span></p>
+        <p><strong>Status:</strong> <span id="appStatus"></span></p>
+      </div>
+      
+      <div class="form-group">
+        <label for="appNotes">Notes</label>
+        <textarea id="appNotes" rows="5"></textarea>
+      </div>
+      
+      <div class="action-btns">
+        <button class="btn" id="completeAppBtn">Complete Appointment</button>
+        <button class="btn btn-secondary" id="saveNotesBtn">Save Notes</button>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <div class="container">
+      <p>&copy; 2023 Hospital Management System</p>
+    </div>
+  </footer>
+
+  <script src="../js/auth.js"></script>
+  <script src="../js/doctor.js"></script>
+</body>
+</html>

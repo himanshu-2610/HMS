@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Hospital Management System</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* ============== LOGIN PAGE STYLES ============== */
+.login-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background: linear-gradient(135deg, rgba(67, 97, 238, 0.1), rgba(72, 149, 239, 0.2));
+  padding: 2rem;
+}
+
+.login-box {
+  background-color: var(--white);
+  border-radius: 12px;
+  box-shadow: var(--box-shadow);
+  width: 100%;
+  max-width: 450px;
+  padding: 2.5rem;
+  animation: fadeIn 0.8s ease-out;
+}
+
+.login-header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.login-header h2 {
+  color: var(--primary-dark);
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
+}
+
+.login-header p {
+  color: var(--gray-color);
+}
+
+/* Form Styles */
+.form-group {
+  margin-bottom: 1.5rem;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+  color: var(--dark-color);
+}
+
+.form-control {
+  width: 100%;
+  padding: 0.8rem 1rem;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 1rem;
+  transition: var(--transition);
+}
+
+.form-control:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.2);
+}
+
+/* Role Selector */
+.role-selector {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 2rem;
+  background-color: var(--light-color);
+  padding: 0.5rem;
+  border-radius: 8px;
+}
+
+.role-selector input[type="radio"] {
+  display: none;
+}
+
+.role-selector label {
+  flex: 1;
+  text-align: center;
+  padding: 0.7rem;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: var(--transition);
+  font-weight: 500;
+  color: var(--gray-color);
+}
+
+.role-selector input[type="radio"]:checked + label {
+  background-color: var(--primary-color);
+  color: var(--white);
+}
+
+/* Button Styles */
+.btn-block {
+  display: block;
+  width: 100%;
+  padding: 1rem;
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+/* Alert Styles */
+.alert {
+  padding: 1rem;
+  margin-bottom: 1.5rem;
+  border-radius: 8px;
+  font-weight: 500;
+}
+
+.alert-danger {
+  background-color: rgba(239, 35, 60, 0.1);
+  color: var(--danger-color);
+  border-left: 4px solid var(--danger-color);
+}
+
+/* Additional Links */
+.text-center {
+  text-align: center;
+}
+
+.mt-20 {
+  margin-top: 1.25rem;
+}
+
+.text-center a {
+  color: var(--primary-color);
+  font-weight: 500;
+}
+
+.text-center a:hover {
+  text-decoration: underline;
+}
+
+/* Animation */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Responsive Adjustments */
+@media (max-width: 480px) {
+  .login-box {
+    padding: 1.5rem;
+  }
+  
+  .role-selector {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  
+  .role-selector label {
+    padding: 0.5rem;
+  }
+}
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <div class="login-box fade-in">
+            <div class="login-header">
+                <h2>Welcome Back</h2>
+                <p>Please login to access your account</p>
+            </div>
+
+            <% if (error) { %>
+                <div class="alert alert-danger">
+                    <%= error %>
+                </div>
+            <% } %>
+
+            <form action="/login" method="POST">
+                <div class="role-selector">
+                    <input type="radio" id="patient" name="role" value="patient" checked>
+                    <label for="patient">Patient</label>
+                    
+                    <input type="radio" id="doctor" name="role" value="doctor">
+                    <label for="doctor">Doctor</label>
+                    
+                    <input type="radio" id="admin" name="role" value="admin">
+                    <label for="admin">Admin</label>
+                </div>
+
+                <div class="form-group">
+                    <label for="username">Username</label>
+                    <input type="text" id="username" name="username" class="form-control" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" name="password" class="form-control" required>
+                </div>
+
+                <button type="submit" class="btn btn-block">Login</button>
+            </form>
+
+            <div class="text-center mt-20">
+                <p>Don't have an account? <a href="/register/patient">Register as Patient</a></p>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>

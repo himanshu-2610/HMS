@@ -1,0 +1,21 @@
+<%- include('../partials/messages') %>
+<h1>Doctor Messages</h1>
+<a href="/send/message">Send New Message</a>
+
+<h2>Your Messages</h2>
+<ul>
+    <% messages.forEach(message => { %>
+        <li>
+            <strong><%= message.sender_name %>:</strong> <%= message.subject %>
+            <p><%= message.message %></p>
+            <p><%= message.created_at %></p>
+            <% if (!message.is_read) { %>
+                <form action="/message/read/<%= message.message_id %>" method="POST">
+                    <button type="submit">Mark as Read</button>
+                </form>
+            <% } else { %>
+                <span>(Read)</span>
+            <% } %>
+        </li>
+    <% }) %>
+</ul>

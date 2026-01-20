@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Doctors - Hospital Management System</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* ============== DOCTORS PAGE STYLES ============== */
+        :root {
+            --primary-color: #4361ee;
+            --primary-dark: #3a0ca3;
+            --primary-light: #4895ef;
+            --white-color: #ffffff;
+            --light-color: #f8f9fa;
+            --dark-color: #212529;
+            --gray-color: #6c757d;
+            --border-radius: 10px;
+            --shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+        }
+
+        .main-content {
+            margin-left: 250px;
+            padding: 2rem;
+            transition: var(--transition);
+        }
+
+        @media (max-width: 992px) {
+            .main-content {
+                margin-left: 0;
+                padding: 1.5rem;
+            }
+        }
+
+        /* Page Header */
+        .page-header {
+            margin-bottom: 2rem;
+        }
+
+        .page-title {
+            font-size: 2rem;
+            color: var(--primary-dark);
+            margin: 0;
+        }
+
+        /* Card Styles */
+        .card {
+            background-color: var(--white-color);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            margin-bottom: 2rem;
+            overflow: hidden;
+        }
+
+        .card-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+            background-color: var(--light-color);
+        }
+
+        .card-title {
+            font-size: 1.5rem;
+            color: var(--primary-dark);
+            margin: 0;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .card-body {
+            padding: 1.5rem;
+        }
+
+        /* Doctors Grid */
+        .doctors-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .doctor-card {
+            background-color: var(--white-color);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            padding: 1.5rem;
+            display: flex;
+            align-items: center;
+            transition: var(--transition);
+            border: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .doctor-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+            border-color: rgba(67, 97, 238, 0.2);
+        }
+
+        .doctor-avatar {
+            margin-right: 1.25rem;
+            flex-shrink: 0;
+        }
+
+        .doctor-avatar img {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid rgba(67, 97, 238, 0.2);
+        }
+
+        .doctor-info {
+            flex: 1;
+        }
+
+        .doctor-info h3 {
+            margin: 0 0 0.5rem 0;
+            color: var(--dark-color);
+            font-size: 1.25rem;
+        }
+
+        .specialization {
+            color: var(--primary-color);
+            font-weight: 500;
+            margin-bottom: 0.75rem;
+            font-size: 0.95rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .specialization::before {
+            content: "";
+            display: inline-block;
+            width: 10px;
+            height: 10px;
+            background-color: var(--primary-color);
+            border-radius: 50%;
+        }
+
+        .doctor-actions {
+            margin-top: 0.75rem;
+        }
+
+        /* Button Styles */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+            text-decoration: none;
+            font-size: 0.9rem;
+        }
+
+        .btn-sm {
+            padding: 0.5rem 1rem;
+        }
+
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: var(--white-color);
+            border: none;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--primary-dark);
+            transform: translateY(-2px);
+        }
+
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 2rem;
+            color: var(--gray-color);
+            grid-column: 1 / -1;
+        }
+
+        .empty-state i {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            color: var(--primary-light);
+        }
+
+        /* Responsive Adjustments */
+        @media (max-width: 768px) {
+            .doctors-grid {
+                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            }
+            
+            .doctor-card {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .doctor-avatar {
+                margin-right: 0;
+                margin-bottom: 1rem;
+            }
+            
+            .specialization {
+                justify-content: center;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .main-content {
+                padding: 1rem;
+            }
+            
+            .page-title {
+                font-size: 1.75rem;
+            }
+            
+            .card-title {
+                font-size: 1.25rem;
+            }
+            
+            .doctors-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <%- include('../partials/header') %>
+    <%- include('../partials/sidebar', {activePage: 'doctors', user: user}) %>
+
+    <main class="main-content">
+        <div class="container">
+            <div class="page-header">
+                <h1 class="page-title">Our Doctors</h1>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title"><i class="fas fa-user-md"></i> Available Specialists</h2>
+                </div>
+                <div class="card-body">
+                    <% if (doctors.length === 0) { %>
+                        <div class="empty-state">
+                            <i class="fas fa-user-md"></i>
+                            <h3>No Doctors Available</h3>
+                            <p>Currently there are no doctors in our system. Please check back later.</p>
+                        </div>
+                    <% } else { %>
+                        <div class="doctors-grid">
+                            <% doctors.forEach(doctor => { %>
+                                <div class="doctor-card">
+                                    <div class="doctor-avatar">
+                                        <img src="https://ui-avatars.com/api/?name=<%= doctor.full_name %>&background=3498db&color=fff" alt="<%= doctor.full_name %>">
+                                    </div>
+                                    <div class="doctor-info">
+                                        <h3><%= doctor.full_name %></h3>
+                                        <p class="specialization"><%= doctor.specialization %></p>
+                                        <div class="doctor-actions">
+                                            <a href="/patient/appointments/book?doctor_id=<%= doctor.doctor_id %>" class="btn btn-primary btn-sm">
+                                                <i class="fas fa-calendar-check"></i> Book Appointment
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            <% }) %>
+                        </div>
+                    <% } %>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="/js/main.js"></script>
+</body>
+</html>

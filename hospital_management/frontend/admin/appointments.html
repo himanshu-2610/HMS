@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Appointment Management</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/admin.css">
+</head>
+<body>
+  <header>
+    <div class="container">
+      <h1>Hospital Management System</h1>
+      <nav>
+        <ul>
+          <li><a href="dashboard.html">Dashboard</a></li>
+          <li><a href="patients.html">Patients</a></li>
+          <li><a href="doctors.html">Doctors</a></li>
+          <li><a href="appointments.html" class="active">Appointments</a></li>
+          <li><a href="pharmacy.html">Pharmacy</a></li>
+          <li><a href="wards.html">Wards</a></li>
+          <li><a class="logout-btn">Logout</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <div class="card">
+      <div class="card-header">
+        <h2>Appointment Management</h2>
+        <div class="action-btns">
+          <button class="btn" id="addAppointmentBtn">Schedule Appointment</button>
+        </div>
+      </div>
+      
+      <div class="filter-bar">
+        <div class="form-group">
+          <label for="dateFilter">Date</label>
+          <input type="date" id="dateFilter">
+        </div>
+        <div class="form-group">
+          <label for="statusFilter">Status</label>
+          <select id="statusFilter">
+            <option value="">All</option>
+            <option value="scheduled">Scheduled</option>
+            <option value="completed">Completed</option>
+            <option value="cancelled">Cancelled</option>
+          </select>
+        </div>
+      </div>
+      
+      <div class="table-responsive">
+        <table id="appointmentsTable">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Date & Time</th>
+              <th>Patient</th>
+              <th>Doctor</th>
+              <th>Status</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- Will be populated by JavaScript -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </main>
+
+  <!-- Add Appointment Modal -->
+  <div id="appointmentModal" class="form-modal">
+    <div class="form-modal-content">
+      <span class="close-modal">&times;</span>
+      <h3 id="modalTitle">Schedule Appointment</h3>
+      <form id="appointmentForm">
+        <input type="hidden" id="appointmentId">
+        <div class="form-group">
+          <label for="appPatient">Patient</label>
+          <select id="appPatient" required>
+            <option value="">Select Patient</option>
+            <!-- Will be populated by JavaScript -->
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="appDoctor">Doctor</label>
+          <select id="appDoctor" required>
+            <option value="">Select Doctor</option>
+            <!-- Will be populated by JavaScript -->
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="appDate">Date & Time</label>
+          <input type="datetime-local" id="appDate" required>
+        </div>
+        <div class="form-group">
+          <label for="appReason">Reason</label>
+          <textarea id="appReason" rows="3" required></textarea>
+        </div>
+        <div class="form-group">
+          <label for="appStatus">Status</label>
+          <select id="appStatus" required>
+            <option value="scheduled">Scheduled</option>
+            <option value="completed">Completed</option>
+            <option value="cancelled">Cancelled</option>
+          </select>
+        </div>
+        <button type="submit" class="btn">Save Appointment</button>
+      </form>
+    </div>
+  </div>
+
+  <footer>
+    <div class="container">
+      <p>&copy; 2023 Hospital Management System</p>
+    </div>
+  </footer>
+
+  <script src="../js/auth.js"></script>
+  <script src="../js/admin.js"></script>
+</body>
+</html>

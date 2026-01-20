@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hospital Management System</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="navbar">
+                <a href="/" class="logo">
+                    <i class="fas fa-hospital"></i>MediCare+
+                </a>
+                <ul class="nav-links">
+                    <% if (!user) { %>
+                        <li><a href="/login"><i class="fas fa-sign-in-alt"></i> Login</a></li>
+                        <li><a href="/register/patient"><i class="fas fa-user-plus"></i> Patient Registration</a></li>
+                    <% } else { %>
+                        <li class="user-info">
+                            <img src="https://ui-avatars.com/api/?name=<%= user.full_name %>&background=fff&color=4361ee" alt="User">
+                            <span><%= user.full_name %></span>
+                        </li>
+                        <li><a href="/logout"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+                    <% } %>
+                </ul>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <section class="hero">
+            <div class="container">
+                <div class="hero-content fade-in">
+                    <h1>Advanced Healthcare Management Solution</h1>
+                    <p>Streamline your hospital operations with our comprehensive management system designed to improve patient care and optimize workflows.</p>
+                    <div class="hero-buttons">
+                        <a href="/login" class="btn"><i class="fas fa-sign-in-alt"></i> Login</a>
+                        <a href="/register/patient" class="btn btn-success"><i class="fas fa-user-plus"></i> Patient Registration</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="features">
+            <div class="container">
+                <h2 class="section-title">Why Choose Our System?</h2>
+                <div class="features-grid">
+                    <div class="feature-card fade-in" style="animation-delay: 0.1s;">
+                        <i class="fas fa-user-md"></i>
+                        <h3>Doctor Management</h3>
+                        <p>Efficiently manage doctor schedules, specialties, and patient assignments with our intuitive interface.</p>
+                    </div>
+                    <div class="feature-card fade-in" style="animation-delay: 0.2s;">
+                        <i class="fas fa-procedures"></i>
+                        <h3>Patient Care</h3>
+                        <p>Comprehensive patient records, medical history tracking, and appointment scheduling in one place.</p>
+                    </div>
+                    <div class="feature-card fade-in" style="animation-delay: 0.3s;">
+                        <i class="fas fa-calendar-check"></i>
+                        <h3>Appointments</h3>
+                        <p>Easy online booking, rescheduling, and cancellation of appointments with real-time availability.</p>
+                    </div>
+                    <div class="feature-card fade-in" style="animation-delay: 0.4s;">
+                        <i class="fas fa-pills"></i>
+                        <h3>Pharmacy</h3>
+                        <p>Complete inventory management for medications with expiry tracking and stock monitoring.</p>
+                    </div>
+                    <div class="feature-card fade-in" style="animation-delay: 0.5s;">
+                        <i class="fas fa-bed"></i>
+                        <h3>Ward Management</h3>
+                        <p>Track bed occupancy, patient admissions, and discharges with our visual ward management system.</p>
+                    </div>
+                    <div class="feature-card fade-in" style="animation-delay: 0.6s;">
+                        <i class="fas fa-comments"></i>
+                        <h3>Communication</h3>
+                        <p>Secure messaging system between patients, doctors, and administrators for better coordination.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="features" style="background-color: #f8f9fa; padding: 4rem 0;">
+            <div class="container">
+                <h2 class="section-title">Our Hospital Services</h2>
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <i class="fas fa-heartbeat" style="color: #ef233c;"></i>
+                        <h3>Cardiology</h3>
+                        <p>Advanced cardiac care with state-of-the-art diagnostic equipment and expert cardiologists.</p>
+                    </div>
+                    <div class="feature-card">
+                        <i class="fas fa-brain" style="color: #3a0ca3;"></i>
+                        <h3>Neurology</h3>
+                        <p>Comprehensive neurological services including stroke care and epilepsy management.</p>
+                    </div>
+                    <div class="feature-card">
+                        <i class="fas fa-bone" style="color: #f8961e;"></i>
+                        <h3>Orthopedics</h3>
+                        <p>Specialized care for bones, joints, and muscles with advanced surgical techniques.</p>
+                    </div>
+                    <div class="feature-card">
+                        <i class="fas fa-baby" style="color: #f72585;"></i>
+                        <h3>Pediatrics</h3>
+                        <p>Child-friendly environment with specialized pediatric care for all ages.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="features">
+            <div class="container">
+                <div class="card" style="max-width: 1000px; margin: 0 auto; text-align: center;">
+                    <h2 class="card-title"><i class="fas fa-clock"></i> Operating Hours</h2>
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5rem; margin-top: 1.5rem;">
+                        <div>
+                            <h3>Outpatient</h3>
+                            <p>Monday - Friday: 8:00 AM - 8:00 PM</p>
+                            <p>Saturday: 9:00 AM - 5:00 PM</p>
+                            <p>Sunday: 10:00 AM - 4:00 PM</p>
+                        </div>
+                        <div>
+                            <h3>Emergency</h3>
+                            <p>24 Hours / 7 Days</p>
+                            <p>Phone: (123) 456-7890</p>
+                        </div>
+                        <div>
+                            <h3>Pharmacy</h3>
+                            <p>Monday - Friday: 9:00 AM - 9:00 PM</p>
+                            <p>Weekends: 10:00 AM - 6:00 PM</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <p><i class="fas fa-hospital"></i> MediCare+ Hospital Management System</p>
+            <p>123 Medical Drive, Healthcare City, HC 12345</p>
+            <p>Phone: (123) 456-7890 | Email: info@medicare-hospital.com</p>
+            <p>&copy; 2023 MediCare+. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="/js/main.js"></script>
+</body>
+</html>

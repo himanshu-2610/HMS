@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Patient Dashboard</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/patient.css">
+</head>
+<body>
+  <header>
+    <div class="container">
+      <h1>Hospital Management System</h1>
+      <nav>
+        <ul>
+          <li><a href="dashboard.html" class="active">Dashboard</a></li>
+          <li><a href="appointments.html">Appointments</a></li>
+          <li><a href="profile.html">Profile</a></li>
+          <li><a class="logout-btn">Logout</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <h2>Patient Dashboard</h2>
+    <div class="dashboard-grid">
+      <div class="card">
+        <h3>Upcoming Appointments</h3>
+        <p id="upcomingCount">Loading...</p>
+      </div>
+      <div class="card">
+        <h3>Medical Records</h3>
+        <p id="recordsCount">Loading...</p>
+      </div>
+      <div class="card">
+        <h3>Bed Status</h3>
+        <p id="bedStatus">Not admitted</p>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>Recent Appointments</h3>
+      <div class="table-responsive">
+        <table id="recentAppointments">
+          <thead>
+            <tr>
+              <th>Date & Time</th>
+              <th>Doctor</th>
+              <th>Status</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- Will be populated by JavaScript -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <div class="container">
+      <p>&copy; 2023 Hospital Management System</p>
+    </div>
+  </footer>
+
+  <script src="../js/auth.js"></script>
+  <script src="../js/patient.js"></script>
+</body>
+</html>

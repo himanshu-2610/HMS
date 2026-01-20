@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Header</title>
+</head>
+<body>
+<header>
+    <div class="container">
+        <div class="navbar">
+            <a href="/" class="logo">
+                <i class="fas fa-hospital"></i>MediCare+
+            </a>
+            <ul class="nav-links">
+                <% if (!user) { %>
+                    <li><a href="/login"><i class="fas fa-sign-in-alt"></i> Login</a></li>
+                    <li><a href="/register/patient"><i class="fas fa-user-plus"></i> Patient Registration</a></li>
+                <% } else { %>
+                    <li class="user-info">
+                        <img src="https://ui-avatars.com/api/?name=<%= user.full_name %>&background=fff&color=4361ee" alt="User">
+                        <span><%= user.full_name %></span>
+                    </li>
+                    <li><a href="/logout"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+                <% } %>
+            </ul>
+        </div>
+    </div>
+</header>
+</body>
+</html>

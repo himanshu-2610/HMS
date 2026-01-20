@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ward Management</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/admin.css">
+</head>
+<body>
+  <header>
+    <div class="container">
+      <h1>Hospital Management System</h1>
+      <nav>
+        <ul>
+          <li><a href="dashboard.html">Dashboard</a></li>
+          <li><a href="patients.html">Patients</a></li>
+          <li><a href="doctors.html">Doctors</a></li>
+          <li><a href="appointments.html">Appointments</a></li>
+          <li><a href="pharmacy.html">Pharmacy</a></li>
+          <li><a href="wards.html" class="active">Wards</a></li>
+          <li><a class="logout-btn">Logout</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <div class="card">
+      <div class="card-header">
+        <h2>Ward & Bed Management</h2>
+        <div class="action-btns">
+          <button class="btn" id="addBedBtn">Add New Bed</button>
+        </div>
+      </div>
+      
+      <div class="filter-bar">
+        <div class="form-group">
+          <label for="wardFilter">Ward</label>
+          <select id="wardFilter">
+            <option value="">All Wards</option>
+            <!-- Will be populated by JavaScript -->
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="statusFilter">Status</label>
+          <select id="statusFilter">
+            <option value="">All</option>
+            <option value="available">Available</option>
+            <option value="occupied">Occupied</option>
+          </select>
+        </div>
+      </div>
+      
+      <div class="table-responsive">
+        <table id="bedsTable">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Ward</th>
+              <th>Bed</th>
+              <th>Status</th>
+              <th>Patient</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- Will be populated by JavaScript -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </main>
+
+  <!-- Add Bed Modal -->
+  <div id="bedModal" class="form-modal">
+    <div class="form-modal-content">
+      <span class="close-modal">&times;</span>
+      <h3>Add New Bed</h3>
+      <form id="bedForm">
+        <div class="form-group">
+          <label for="wardNumber">Ward Number</label>
+          <input type="text" id="wardNumber" required>
+        </div>
+        <div class="form-group">
+          <label for="bedNumber">Bed Number</label>
+          <input type="text" id="bedNumber" required>
+        </div>
+        <button type="submit" class="btn">Add Bed</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Assign Patient Modal -->
+  <div id="assignModal" class="form-modal">
+    <div class="form-modal-content">
+      <span class="close-modal">&times;</span>
+      <h3>Assign Patient to Bed</h3>
+      <form id="assignForm">
+        <input type="hidden" id="assignBedId">
+        <div class="form-group">
+          <label for="assignPatient">Patient</label>
+          <select id="assignPatient" required>
+            <option value="">Select Patient</option>
+            <!-- Will be populated by JavaScript -->
+          </select>
+        </div>
+        <button type="submit" class="btn">Assign Patient</button>
+      </form>
+    </div>
+  </div>
+
+  <footer>
+    <div class="container">
+      <p>&copy; 2023 Hospital Management System</p>
+    </div>
+  </footer>
+
+  <script src="../js/auth.js"></script>
+  <script src="../js/admin.js"></script>
+</body>
+</html>

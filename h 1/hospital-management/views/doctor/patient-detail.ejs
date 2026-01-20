@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Patient Details - Hospital Management System</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* ============== PATIENT DETAILS PAGE STYLES ============== */
+        :root {
+            --primary-color: #4361ee;
+            --primary-dark: #3a0ca3;
+            --primary-light: #4895ef;
+            --success-color: #4caf50;
+            --danger-color: #ef233c;
+            --warning-color: #f8961e;
+            --white-color: #ffffff;
+            --light-color: #f8f9fa;
+            --dark-color: #212529;
+            --gray-color: #6c757d;
+            --border-radius: 10px;
+            --shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            color: var(--dark-color);
+            background-color: #f5f7fa;
+            margin: 0;
+            padding: 0;
+        }
+
+        .main-content {
+            margin-left: 250px;
+            padding: 2rem;
+            transition: var(--transition);
+        }
+
+        @media (max-width: 992px) {
+            .main-content {
+                margin-left: 0;
+                padding: 1.5rem;
+            }
+        }
+
+        /* Page Header */
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .page-title {
+            font-size: 2rem;
+            color: var(--primary-dark);
+            margin: 0;
+        }
+
+        /* Card Styles */
+        .card {
+            background-color: var(--white-color);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            margin-bottom: 1.5rem;
+            overflow: hidden;
+            border: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .mt-20 {
+            margin-top: 1.25rem;
+        }
+
+        .card-header {
+            padding: 1.25rem 1.5rem;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+            background-color: var(--light-color);
+        }
+
+        .card-title {
+            font-size: 1.5rem;
+            color: var(--primary-dark);
+            margin: 0;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .card-body {
+            padding: 1.5rem;
+        }
+
+        /* Row and Column Layout */
+        .row {
+            display: flex;
+            flex-wrap: wrap;
+            margin: 0 -0.75rem;
+        }
+
+        .col-md-6 {
+            flex: 0 0 50%;
+            max-width: 50%;
+            padding: 0 0.75rem;
+        }
+
+        .col-12 {
+            flex: 0 0 100%;
+            max-width: 100%;
+            padding: 0 0.75rem;
+        }
+
+        /* Patient Info Styles */
+        .card-body p {
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
+            line-height: 1.6;
+        }
+
+        .card-body p strong {
+            color: var(--primary-dark);
+            min-width: 120px;
+            display: inline-block;
+        }
+
+        /* Table Styles */
+        .table-responsive {
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            border-radius: var(--border-radius);
+        }
+
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.95rem;
+        }
+
+        .table th {
+            background-color: var(--light-color);
+            color: var(--dark-color);
+            font-weight: 600;
+            text-align: left;
+            padding: 1rem;
+            white-space: nowrap;
+        }
+
+        .table td {
+            padding: 1rem;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+            vertical-align: top;
+        }
+
+        .table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .table tr:hover td {
+            background-color: rgba(67, 97, 238, 0.03);
+        }
+
+        /* Badge Styles */
+        .badge {
+            display: inline-block;
+            padding: 0.35em 0.65em;
+            font-size: 0.75em;
+            font-weight: 700;
+            line-height: 1;
+            text-align: center;
+            white-space: nowrap;
+            vertical-align: baseline;
+            border-radius: 50px;
+        }
+
+        .badge-primary {
+            background-color: #e0f2fe;
+            color: #0369a1;
+        }
+
+        .badge-success {
+            background-color: #dcfce7;
+            color: #166534;
+        }
+
+        .badge-danger {
+            background-color: #fee2e2;
+            color: #991b1b;
+        }
+
+        /* Form Styles */
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: var(--dark-color);
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 0.8rem 1rem;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: var(--transition);
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.2);
+        }
+
+        textarea.form-control {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        /* Button Styles */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.8rem 1.5rem;
+            border-radius: 8px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+            text-decoration: none;
+            border: none;
+        }
+
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--primary-dark);
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background-color: #6c757d;
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background-color: #5a6268;
+            transform: translateY(-2px);
+        }
+
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 2rem;
+            color: var(--gray-color);
+        }
+
+        .empty-state i {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            color: var(--primary-light);
+        }
+
+        /* Responsive Adjustments */
+        @media (max-width: 768px) {
+            .col-md-6 {
+                flex: 0 0 100%;
+                max-width: 100%;
+            }
+            
+            .page-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .card-header,
+            .card-body {
+                padding: 1.25rem;
+            }
+            
+            .table th, 
+            .table td {
+                padding: 0.75rem 0.5rem;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .main-content {
+                padding: 1rem;
+            }
+            
+            .page-title {
+                font-size: 1.75rem;
+            }
+            
+            .card-title {
+                font-size: 1.25rem;
+            }
+            
+            .btn {
+                padding: 0.7rem 1.2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <%- include('../partials/header') %>
+    <%- include('../partials/sidebar', {activePage: 'patients', user: user}) %>
+
+    <main class="main-content">
+        <div class="container">
+            <div class="page-header">
+                <h1 class="page-title"><i class="fas fa-user-injured"></i> Patient Details</h1>
+                <a href="/doctor/patients" class="btn btn-secondary">
+                    <i class="fas fa-arrow-left"></i> Back to Patients
+                </a>
+            </div>
+
+            <!-- Personal Information Card -->
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title"><i class="fas fa-id-card"></i> Personal Information</h2>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <p><strong><i class="fas fa-user"></i> Name:</strong> <%= patient.full_name %></p>
+                            <p><strong><i class="fas fa-envelope"></i> Email:</strong> <%= patient.email %></p>
+                            <p><strong><i class="fas fa-birthday-cake"></i> Date of Birth:</strong> <%= new Date(patient.dob).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }) %></p>
+                        </div>
+                        <div class="col-md-6">
+                            <p><strong><i class="fas fa-venus-mars"></i> Gender:</strong> <%= patient.gender %></p>
+                            <p><strong><i class="fas fa-phone"></i> Phone:</strong> <%= patient.phone || 'N/A' %></p>
+                            <p><strong><i class="fas fa-tint"></i> Blood Group:</strong> <%= patient.blood_group || 'N/A' %></p>
+                        </div>
+                    </div>
+                    <div class="row mt-20">
+                        <div class="col-12">
+                            <p><strong><i class="fas fa-map-marker-alt"></i> Address:</strong> <%= patient.address || 'N/A' %></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Appointments Card -->
+            <div class="card mt-20">
+                <div class="card-header">
+                    <h2 class="card-title"><i class="fas fa-calendar-check"></i> Appointments</h2>
+                </div>
+                <div class="card-body">
+                    <% if (appointments.length > 0) { %>
+                        <div class="table-responsive">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>Date</th>
+                                        <th>Time</th>
+                                        <th>Status</th>
+                                        <th>Reason</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <% appointments.forEach(appointment => { %>
+                                        <tr>
+                                            <td><%= new Date(appointment.appointment_date).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' }) %></td>
+                                            <td><%= appointment.appointment_time %></td>
+                                            <td>
+                                                <span class="badge <%= appointment.status === 'Scheduled' ? 'badge-primary' : appointment.status === 'Completed' ? 'badge-success' : 'badge-danger' %>">
+                                                    <%= appointment.status %>
+                                                </span>
+                                            </td>
+                                            <td><%= appointment.reason || 'N/A' %></td>
+                                        </tr>
+                                    <% }) %>
+                                </tbody>
+                            </table>
+                        </div>
+                    <% } else { %>
+                        <div class="empty-state">
+                            <i class="fas fa-calendar-times"></i>
+                            <h3>No Appointments Found</h3>
+                            <p>This patient doesn't have any appointments recorded.</p>
+                        </div>
+                    <% } %>
+                </div>
+            </div>
+
+            <!-- Medical Records Card -->
+            <div class="card mt-20">
+                <div class="card-header">
+                    <h2 class="card-title"><i class="fas fa-file-medical"></i> Medical Records</h2>
+                </div>
+                <div class="card-body">
+                    <% if (medicalRecords.length > 0) { %>
+                        <div class="table-responsive">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>Date</th>
+                                        <th>Diagnosis</th>
+                                        <th>Treatment</th>
+                                        <th>Prescription</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <% medicalRecords.forEach(record => { %>
+                                        <tr>
+                                            <td><%= new Date(record.record_date).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' }) %></td>
+                                            <td><%= record.diagnosis || 'N/A' %></td>
+                                            <td><%= record.treatment || 'N/A' %></td>
+                                            <td><%= record.prescription || 'N/A' %></td>
+                                        </tr>
+                                    <% }) %>
+                                </tbody>
+                            </table>
+                        </div>
+                    <% } else { %>
+                        <div class="empty-state">
+                            <i class="fas fa-file-medical-alt"></i>
+                            <h3>No Medical Records Found</h3>
+                            <p>This patient doesn't have any medical records yet.</p>
+                        </div>
+                    <% } %>
+                </div>
+            </div>
+
+            <!-- Add Medical Record Card -->
+            <div class="card mt-20">
+                <div class="card-header">
+                    <h2 class="card-title"><i class="fas fa-plus-circle"></i> Add Medical Record</h2>
+                </div>
+                <div class="card-body">
+                    <form action="/doctor/medical-record" method="POST">
+                        <input type="hidden" name="patient_id" value="<%= patient.patient_id %>">
+                        
+                        <div class="form-group">
+                            <label for="record_date"><i class="fas fa-calendar-day"></i> Record Date</label>
+                            <input type="date" id="record_date" name="record_date" class="form-control" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="diagnosis"><i class="fas fa-stethoscope"></i> Diagnosis</label>
+                            <textarea id="diagnosis" name="diagnosis" class="form-control" rows="3" placeholder="Enter diagnosis details"></textarea>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="treatment"><i class="fas fa-medkit"></i> Treatment</label>
+                            <textarea id="treatment" name="treatment" class="form-control" rows="3" placeholder="Enter treatment details"></textarea>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="prescription"><i class="fas fa-pills"></i> Prescription</label>
+                            <textarea id="prescription" name="prescription" class="form-control" rows="3" placeholder="Enter prescription details"></textarea>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="notes"><i class="fas fa-notes-medical"></i> Notes</label>
+                            <textarea id="notes" name="notes" class="form-control" rows="3" placeholder="Additional notes"></textarea>
+                        </div>
+                        
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-save"></i> Add Record
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // Set default date to today
+        document.getElementById('record_date').valueAsDate = new Date();
+    </script>
+
+    <script src="/js/main.js"></script>
+</body>
+</html>

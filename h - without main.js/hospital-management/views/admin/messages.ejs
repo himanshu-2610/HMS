@@ -1,0 +1,90 @@
+<%- include('../partials/header') %>
+<%- include('../partials/sidebar') %>
+
+<div class="container mt-5">
+    <h1 class="mb-4">Messages</h1>
+
+    <!-- Send Message Form -->
+    <div class="card mb-5">
+        <div class="card-header">
+            <h5>Send a New Message</h5>
+        </div>
+        <div class="card-body">
+            <form action="/messages/send" method="POST">
+                <input type="hidden" name="sender_type" value="<%= userType %>">
+                <input type="hidden" name="sender_id" value="<%= userId %>">
+                
+                <div class="mb-3">
+                    <label for="receiver_id" class="form-label">Select Receiver</label>
+                    <select class="form-select" name="receiver_id" required>
+                        <option value="" disabled selected>Choose a user</option>
+                        <% usersList.forEach(user => { %>
+                            <% if (user.id !== userId || user.role !== userType) { %>
+                                <option value="<%= user.role %>-<%= user.id %>">
+                                    <%= user.full_name %> (<%= user.role %>)
+                                </option>
+                            <% } %>
+                        <% }) %>
+                    </select>
+                </div>
+
+                <div class="mb-3">
+                    <label for="subject" class="form-label">Subject</label>
+                    <input type="text" class="form-control" name="subject" required>
+                </div>
+
+                <div class="mb-3">
+                    <label for="message" class="form-label">Message</label>
+                    <textarea class="form-control" name="message" rows="4" required></textarea>
+                </div>
+
+                <button type="submit" class="btn btn-primary">Send Message</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Received Messages -->
+    <div class="card">
+        <div class="card-header">
+            <h5>Inbox</h5>
+        </div>
+        <div class="card-body">
+            <% if (messages.length > 0) { %>
+                <div class="table-responsive">
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>From</th>
+                                <th>Subject</th>
+                                <th>Message</th>
+                                <th>Status</th>
+                                <th>Date</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% messages.forEach(msg => { %>
+                                <tr>
+                                    <td><%= msg.sender_type.charAt(0).toUpperCase() + msg.sender_type.slice(1) %> (ID: <%= msg.sender_id %>)</td>
+                                    <td><%= msg.subject %></td>
+                                    <td><%= msg.message %></td>
+                                    <td>
+                                        <% if (msg.is_read) { %>
+                                            <span class="badge bg-success">Read</span>
+                                        <% } else { %>
+                                            <span class="badge bg-warning">Unread</span>
+                                        <% } %>
+                                    </td>
+                                    <td><%= new Date(msg.created_at).toLocaleString() %></td>
+                                </tr>
+                            <% }) %>
+                        </tbody>
+                    </table>
+                </div>
+            <% } else { %>
+                <p>No messages yet.</p>
+            <% } %>
+        </div>
+    </div>
+
+</div>
+

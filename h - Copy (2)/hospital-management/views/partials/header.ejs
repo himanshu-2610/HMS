@@ -1,0 +1,22 @@
+<header>
+    <div class="container">
+        <div class="navbar">
+            <a href="/" class="logo">HospitalMS</a>
+            <button class="menu-toggle hidden-md hidden-lg">
+                <i class="fas fa-bars"></i>
+            </button>
+            <ul class="nav-links">
+                <% if (!user) { %>
+                    <li><a href="/login">Login</a></li>
+                    <li><a href="/register/patient">Patient Registration</a></li>
+                <% } else { %>
+                    <li class="user-info">
+                        <img src="https://ui-avatars.com/api/?name=<%= user.full_name %>&background=3498db&color=fff" alt="User">
+                        <span><%= user.full_name %></span>
+                    </li>
+                    <li><a href="/logout">Logout</a></li>
+                <% } %>
+            </ul>
+        </div>
+    </div>
+</header>
