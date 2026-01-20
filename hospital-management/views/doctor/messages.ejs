@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Messages - Doctor Dashboard</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <%- include('../partials/header') %>
+    <%- include('../partials/sidebar', {activePage: 'messages', user: user}) %>
+    
+    <main class="main-content">
+        <div class="page-header">
+            <h1 class="page-title">Messages</h1>
+        </div>
+    
+        <%- include('../partials/messages', {messages: messages, user: user}) %>
+    
+        <!-- Doctor-specific new message form -->
+        <div class="card mt-4">
+            <div class="card-header">
+                <h2 class="card-title">New Message</h2>
+            </div>
+            <div class="card-body">
+                <form action="/doctor/messages/send" method="POST">
+                    <div class="form-group">
+                        <label for="receiver_type">Send To</label>
+                        <select id="receiver_type" name="receiver_type" class="form-control" required>
+                            <option value="">Select recipient type</option>
+                            <option value="admin">Admin</option>
+                            <option value="patient">Patient</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group" id="patientSelect" style="display: none;">
+                        <label for="patient_id">Select Patient</label>
+                        <select id="patient_id" name="receiver_id" class="form-control">
+                            <% patients.forEach(patient => { %>
+                                <option value="<%= patient.patient_id %>"><%= patient.full_name %></option>
+                            <% }) %>
+                        </select>
+                    </div>
+
+                    <div class="form-group" id="adminSelect" style="display: none;">
+                        <label for="admin_id">Select admin</label>
+                        <select id="admin_id" name="receiver_id" class="form-control">
+                            <% admins.forEach(admin => { %>
+                                <option value="<%= admin.admin_id %>"><%= admin.full_name %></option>
+                            <% }) %>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="subject">Subject</label>
+                        <input type="text" id="subject" name="subject" class="form-control" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="message">Message</label>
+                        <textarea id="message" name="message" class="form-control" rows="5" required></textarea>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary">Send Message</button>
+                </form>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const receiverType = document.getElementById('receiver_type');
+            if (receiverType) {
+                receiverType.dispatchEvent(new Event('change'));
+            }
+        });
+    
+        document.getElementById('receiver_type').addEventListener('change', function() {
+            const patientSelect = document.getElementById('patientSelect');
+            const adminSelect = document.getElementById('adminSelect');
+            const receiverIdField = document.getElementById('receiver_id');
+            
+            if (this.value === 'patient') {
+                patientSelect.style.display = 'block';
+                adminSelect.style.display = 'none';
+                // Set the receiver_id from patient dropdown
+                receiverIdField.value = document.getElementById('patient_id').value;
+            } else if (this.value === 'admin') {
+                patientSelect.style.display = 'none';
+                adminSelect.style.display = 'block';
+                // Set the receiver_id from admin dropdown
+                receiverIdField.value = document.getElementById('admin_id').value;
+            } else {
+                patientSelect.style.display = 'none';
+                adminSelect.style.display = 'none';
+                receiverIdField.value = '';
+            }
+        });
+    
+        // Update receiver_id when dropdowns change
+        document.getElementById('patient_id').addEventListener('change', function() {
+            if (document.getElementById('receiver_type').value === 'patient') {
+                document.getElementById('receiver_id').value = this.value;
+            }
+        });
+    
+        document.getElementById('admin_id').addEventListener('change', function() {
+            if (document.getElementById('receiver_type').value === 'admin') {
+                document.getElementById('receiver_id').value = this.value;
+            }
+        });
+    </script>
+    
+</body>
+</html>
