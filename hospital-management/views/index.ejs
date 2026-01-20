@@ -9,7 +9,27 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
-    <%- include('partials/header') %>
+    <header>
+        <div class="container">
+            <div class="navbar">
+                <a href="/" class="logo">
+                    <i class="fas fa-hospital"></i>MediCare+
+                </a>
+                <ul class="nav-links">
+                    <% if (!user) { %>
+                        <li><a href="/login"><i class="fas fa-sign-in-alt"></i> Login</a></li>
+                        <li><a href="/register/patient"><i class="fas fa-user-plus"></i> Patient Registration</a></li>
+                    <% } else { %>
+                        <li class="user-info">
+                            <img src="https://ui-avatars.com/api/?name=<%= user.full_name %>&background=fff&color=4361ee" alt="User">
+                            <span><%= user.full_name %></span>
+                        </li>
+                        <li><a href="/logout"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+                    <% } %>
+                </ul>
+            </div>
+        </div>
+    </header>
 
     <main>
         <section class="hero">
@@ -93,11 +113,11 @@
 
         <section class="features">
             <div class="container">
-                <div class="card" style="margin: 0 auto; text-align: center;">
+                <div class="card" style="max-width: 1000px; margin: 0 auto; text-align: center;">
                     <h2 class="card-title"><i class="fas fa-clock"></i> Operating Hours</h2>
                     <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5rem; margin-top: 1.5rem;">
                         <div>
-                            <h3>Timing</h3>
+                            <h3>Outpatient</h3>
                             <p>Monday - Friday: 8:00 AM - 8:00 PM</p>
                             <p>Saturday: 9:00 AM - 5:00 PM</p>
                             <p>Sunday: 10:00 AM - 4:00 PM</p>
@@ -118,18 +138,15 @@
         </section>
     </main>
 
-  
     <footer>
-        <div class="container" id="footer">
-            <div>
-                <p></i> MediCare+ Hospital Management System</p>
-                <p>123 Medical Drive, Healthcare City, HC 12345</p>
-            </div>
-            <div>
-                <p>Phone: (123) 456-7890 | Email: info@medicare-hospital.com</p>
-                <p>2023 MediCare+. All rights reserved.</p>
-            </div>
+        <div class="container">
+            <p><i class="fas fa-hospital"></i> MediCare+ Hospital Management System</p>
+            <p>123 Medical Drive, Healthcare City, HC 12345</p>
+            <p>Phone: (123) 456-7890 | Email: info@medicare-hospital.com</p>
+            <p>&copy; 2023 MediCare+. All rights reserved.</p>
         </div>
     </footer>
+
+    <script src="/js/main.js"></script>
 </body>
 </html>

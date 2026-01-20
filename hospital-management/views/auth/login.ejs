@@ -12,7 +12,7 @@
         <div class="login-box fade-in">
             <div class="login-header">
                 <h2>Welcome Back</h2>
-                <p>Please login to your respective account</p>
+                <p>Please login to access your account</p>
             </div>
 
             <% if (error) { %>
@@ -20,15 +20,17 @@
                     <%= error %>
                 </div>
             <% } %>
-                
+
             <form action="/login" method="POST">
                 <div class="role-selector">
-                    <input type="radio" id="patient" name="role" value="patient">
+                    <input type="radio" id="patient" name="role" value="patient" checked>
                     <label for="patient">Patient</label>
                     
                     <input type="radio" id="doctor" name="role" value="doctor">
                     <label for="doctor">Doctor</label>
                     
+                    <input type="radio" id="admin" name="role" value="admin">
+                    <label for="admin">Admin</label>
                 </div>
 
                 <div class="form-group">

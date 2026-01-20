@@ -73,13 +73,36 @@ app.post('/login', async (req, res) => {
     const { username, password, role } = req.body;
     
     try {
-        if (role === 'doctor') {
+        if (role === 'admin') {
+            const [rows] = await db.query('SELECT * FROM admins WHERE username = ?', [username]);
+            if (rows.length === 0) {
+                return res.render('auth/login', { error: 'Invalid admin credentials' });
+            }
+            
+            const admin = rows[0];
+            // Replace bcrypt.compare with direct comparison
+            if (password !== admin.password) {
+                return res.render('auth/login', { error: 'Invalid admin credentials' });
+            }
+            
+            req.session.user = {
+                id: admin.admin_id,
+                username: admin.username,
+                full_name: admin.full_name,
+                email: admin.email,
+                role: 'admin'
+            };
+            
+            return res.redirect('/admin/dashboard');
+        } 
+        else if (role === 'doctor') {
             const [rows] = await db.query('SELECT * FROM doctors WHERE username = ?', [username]);
             if (rows.length === 0) {
                 return res.render('auth/login', { error: 'Invalid doctor credentials' });
             }
             
             const doctor = rows[0];
+            // Replace bcrypt.compare with direct comparison
             if (password !== doctor.password) {
                 return res.render('auth/login', { error: 'Invalid doctor credentials' });
             }
@@ -106,6 +129,7 @@ app.post('/login', async (req, res) => {
             }
             
             const patient = rows[0];
+            // Replace bcrypt.compare with direct comparison
             if (password !== patient.password) {
                 return res.render('auth/login', { error: 'Invalid patient credentials' });
             }
@@ -120,27 +144,6 @@ app.post('/login', async (req, res) => {
             
             return res.redirect('/patient/dashboard');
         }
-        else  {
-            const [rows] = await db.query('SELECT * FROM admins WHERE username = ?', [username]);
-            if (rows.length === 0) {
-                return res.render('auth/login', { error: 'Please select your role' });
-            }
-            
-            const admin = rows[0];
-            if (password !== admin.password) {
-                return res.render('auth/login', { error: 'Please select your role' });
-            }
-            
-            req.session.user = {
-                id: admin.admin_id,
-                username: admin.username,
-                full_name: admin.full_name,
-                email: admin.email,
-                role: 'admin'
-            };
-            
-            return res.redirect('/admin/dashboard');
-        }
     } catch (err) {
         console.error(err);
         return res.render('auth/login', { error: 'An error occurred during login' });
@@ -148,26 +151,52 @@ app.post('/login', async (req, res) => {
 });
 
 app.get('/register/patient', (req, res) => {
-    res.render('auth/register-patient', { error: null});
+    res.render('auth/register-patient', { error: null });
 });
 
 app.post('/register/patient', async (req, res) => {
     const { username, password, full_name, email, dob, gender, phone, address, blood_group } = req.body;
     
     try {
+        // Check if username or email already exists
         const [existing] = await db.query('SELECT * FROM patients WHERE username = ? OR email = ?', [username, email]);
         if (existing.length > 0) {
             return res.render('auth/register-patient', { error: 'Username or email already exists' });
         }
+        
+        // Remove password hashing
         await db.query(
             'INSERT INTO patients (username, password, full_name, email, dob, gender, phone, address, blood_group) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)',
             [username, password, full_name, email, dob, gender, phone, address, blood_group]
         );
-        res.redirect('')
+        
         res.redirect('/login');
     } catch (err) {
         console.error(err);
         res.render('auth/register-patient', { error: 'An error occurred during registration' });
+    }
+});
+
+app.post('/register/doctor', requireAdmin, async (req, res) => {
+    const { username, password, full_name, email, specialization, phone, address } = req.body;
+    
+    try {
+        // Check if username or email already exists
+        const [existing] = await db.query('SELECT * FROM doctors WHERE username = ? OR email = ?', [username, email]);
+        if (existing.length > 0) {
+            return res.render('auth/register-doctor', { error: 'Username or email already exists' });
+        }
+        
+        // Remove password hashing
+        await db.query(
+            'INSERT INTO doctors (username, password, full_name, email, specialization, phone, address) VALUES (?, ?, ?, ?, ?, ?, ?)',
+            [username, password, full_name, email, specialization, phone, address]
+        );
+        
+        res.redirect('/admin/doctors');
+    } catch (err) {
+        console.error(err);
+        res.render('auth/register-doctor', { error: 'An error occurred during registration' });
     }
 });
 
@@ -179,11 +208,16 @@ app.post('/register/doctor', requireAdmin, async (req, res) => {
     const { username, password, full_name, email, specialization, phone, address } = req.body;
     
     try {
+        // Check if username or email already exists
         const [existing] = await db.query('SELECT * FROM doctors WHERE username = ? OR email = ?', [username, email]);
         if (existing.length > 0) {
             return res.render('auth/register-doctor', { error: 'Username or email already exists' });
         }
-    
+        
+        // Hash password
+        const hashedPassword = await bcrypt.hash(password, 10);
+        
+        // Insert new doctor
         await db.query(
             'INSERT INTO doctors (username, password, full_name, email, specialization, phone, address) VALUES (?, ?, ?, ?, ?, ?, ?)',
             [username, hashedPassword, full_name, email, specialization, phone, address]
@@ -204,6 +238,7 @@ app.get('/logout', (req, res) => {
 // Admin routes
 app.get('/admin/dashboard', requireAdmin, async (req, res) => {
     try {
+        // Get counts for dashboard
         const [patients] = await db.query('SELECT COUNT(*) as count FROM patients');
         const [doctors] = await db.query('SELECT COUNT(*) as count FROM doctors WHERE is_active = TRUE');
         const [appointments] = await db.query('SELECT COUNT(*) as count FROM appointments WHERE status = "Scheduled"');
@@ -430,9 +465,11 @@ app.post('/admin/medicine/delete/:id', requireAdmin, async (req, res) => {
 // Doctor routes
 app.get('/doctor/dashboard', requireDoctor, async (req, res) => {
     try {
+        // Get counts for dashboard
         const [appointments] = await db.query('SELECT COUNT(*) as count FROM appointments WHERE doctor_id = ? AND status = "Scheduled"', [req.session.user.id]);
         const [patients] = await db.query('SELECT COUNT(DISTINCT patient_id) as count FROM appointments WHERE doctor_id = ?', [req.session.user.id]);
         
+        // Get today's appointments
         const today = new Date().toISOString().split('T')[0];
         const [todaysAppointments] = await db.query(`
             SELECT a.*, p.full_name as patient_name 
@@ -790,7 +827,7 @@ app.post('/admin/messages/send', requireAdmin, async (req, res) => {
         return res.status(400).send('All fields are required');
     }
 
-  
+    try {
         const pool = await db.getConnection();
         await pool.query(
             'INSERT INTO messages (sender_type, sender_id, receiver_type, receiver_id, subject, message) VALUES (?, ?, ?, ?, ?, ?)',
@@ -798,7 +835,10 @@ app.post('/admin/messages/send', requireAdmin, async (req, res) => {
         );
         pool.release();
         res.redirect('/admin/messages');
-    
+    } catch (err) {
+        console.error('Message send error:', err);
+        res.status(500).send('Server Error: ' + err.message);
+    }
 });
 
 // Doctor Messages
@@ -831,7 +871,7 @@ app.get('/doctor/messages', requireDoctor, async (req, res) => {
                 (m.sender_type = 'doctor' AND m.sender_id = ?)
             ORDER BY m.created_at DESC
         `, [req.session.user.id, req.session.user.id]);
-        
+
         const [patients] = await pool.query(`
             SELECT p.patient_id, p.full_name 
             FROM patients p
@@ -931,6 +971,8 @@ app.post('/patient/messages/send', requirePatient, async (req, res) => {
     if (!receiver_type || !receiver_id || !subject || !message) {
         return res.status(400).send('All fields are required');
     }
+
+
         const pool = await db.getConnection();
         await pool.query(
             'INSERT INTO messages (sender_type, sender_id, receiver_type, receiver_id, subject, message) VALUES (?, ?, ?, ?, ?, ?)',

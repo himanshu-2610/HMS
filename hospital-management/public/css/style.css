@@ -298,11 +298,12 @@ header {
 }
 
 .card-title {
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: var(--dark-color);
+    display: flex;
     align-items: center;
     gap: 10px;
-    text-align: center;
-    margin-bottom: 3rem;
-    font-size: 2rem;
 }
 
 .card-title i {
@@ -783,9 +784,4 @@ footer {
 footer p {
     margin-bottom: 0;
     color: rgba(255, 255, 255, 0.7);
-}
-#footer{
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
 }
