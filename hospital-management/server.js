@@ -8,20 +8,59 @@ const path = require('path');
 
 const app = express();
 
+const DB_HOST = process.env.DB_HOST;
+const DB_USER = process.env.DB_USER;
+const DB_PASSWORD = process.env.DB_PASSWORD ?? '';
+const DB_NAME = process.env.DB_NAME;
+const DB_PORT = process.env.DB_PORT ? Number.parseInt(process.env.DB_PORT, 10) : 3306;
+
+const SESSION_SECRET = process.env.SESSION_SECRET;
+
+if (!DB_HOST || !DB_USER || !DB_NAME) {
+    console.error('❌ Missing database environment variables. Please set DB_HOST, DB_USER, and DB_NAME in your .env file.');
+    process.exit(1);
+}
+
+if (process.env.DB_PORT && Number.isNaN(DB_PORT)) {
+    console.error('❌ Invalid DB_PORT. Please set DB_PORT to a number (e.g., 3306).');
+    process.exit(1);
+}
+
+if (!SESSION_SECRET) {
+    console.error('❌ Missing SESSION_SECRET in your .env file.');
+    process.exit(1);
+}
+
 // Database connection
 const db = mysql.createPool({
-    host: 'localhost',
-    user: 'root',
-    password: 'himanshu',
-    database: 'hospital_management'
+    host: DB_HOST,
+    user: DB_USER,
+    password: DB_PASSWORD,
+    database: DB_NAME,
+    port: DB_PORT
 });
+
+// Test database connection
+async function testConnection() {
+    try {
+        const connection = await db.getConnection();
+        console.log('✅ Connected to MySQL database successfully!');
+        connection.release();
+    } catch (err) {
+        console.error('❌ Error connecting to MySQL database:');
+        console.error('   Error Code:', err.code);
+        console.error('   Error Message:', err.message);
+        console.log(`\nTIP: Make sure your MySQL server is running and the database "${DB_NAME}" exists.`);
+    }
+}
+testConnection();
 
 // Middleware
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(cookieParser());
 app.use(session({
-    secret: 'hospital_secret_key',
+    secret: SESSION_SECRET,
     resave: false,
     saveUninitialized: true,
     cookie: { secure: false }
@@ -1051,5 +1090,5 @@ app.post('/:role/messages/:id/read', async (req, res) => {
 // Start server
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
-    console.log(`Server running on port http://localhost:3000/`);
+    console.log(`Server running on http://localhost:${PORT}/`);
 });
